@@ -1,275 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Until I meet You🤍</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Countdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --sky1: #ffe3d6; --sky2: #ffc9d4; --sky3: #e9b8e6;
+    --ink: #5a2442; --soft: #8a4a6b; --accent: #d6457a; --track: rgba(214,69,122,.16);
+    --glass: rgba(255,255,255,.55); --glass-border: rgba(255,255,255,.8);
+    --sun: #fff1b8;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --sky1: #2a1033; --sky2: #5b1d4f; --sky3: #a33b6b;
+      --ink: #fff0f6; --soft: #f3c4d8; --accent: #ff8fb8; --track: rgba(255,143,184,.2);
+      --glass: rgba(255,255,255,.1); --glass-border: rgba(255,255,255,.22);
+      --sun: #ffb48a;
     }
-
-    body {
-      min-height: 100vh;
-      font-family: Georgia, serif;
-      background:
-        radial-gradient(circle at 50% 10%, #71304f 0%, transparent 42%),
-        linear-gradient(135deg, #160019, #3b0a2a, #741c3f);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      overflow: hidden;
-    }
-
-    .hearts {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -30px;
-      color: rgba(255, 190, 215, 0.65);
-      animation: floatUp linear forwards;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-      }
-      20% { opacity: 1; }
-      to {
-        transform: translateY(-110vh) rotate(35deg);
-        opacity: 0;
-      }
-    }
-
-    .card {
-      width: 100%;
-      max-width: 720px;
-      padding: 48px 26px 38px;
-      text-align: center;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.09);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255,255,255,0.19);
-      box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-      position: relative;
-      z-index: 1;
-    }
-
-    .heart-icon {
-      color: #ffc0d5;
-      font-size: 30px;
-      margin-bottom: 22px;
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      50% { transform: scale(1.18); }
-    }
-
-    .eyebrow {
-      font: 11px Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      color: #ffc0d5;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: clamp(39px, 8vw, 68px);
-      font-weight: 400;
-      line-height: 1.1;
-    }
-
-    h1 span {
-      display: block;
-      color: #ffc0d5;
-      font-style: italic;
-      margin-top: 6px;
-    }
-
-    .subtitle {
-      margin: 22px 0 34px;
-      font-size: clamp(15px, 3vw, 18px);
-      line-height: 1.7;
-      color: rgba(255,255,255,0.85);
-    }
-
-    .timer {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .box {
-      padding: 22px 5px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,220,235,0.16);
-    }
-
-    .number {
-      display: block;
-      font: 300 clamp(30px, 6.5vw, 53px) Arial, sans-serif;
-      font-variant-numeric: tabular-nums;
-      color: #fff6fa;
-    }
-
-    .label {
-      display: block;
-      margin-top: 10px;
-      font: 10px Arial, sans-serif;
-      letter-spacing: 2px;
-      color: #f5cbd9;
-      text-transform: uppercase;
-    }
-
-    .date {
-      margin-top: 27px;
-      font: 12px Arial, sans-serif;
-      letter-spacing: 2px;
-      color: #ffc0d5;
-    }
-
-    .footer {
-      margin-top: 30px;
-      font-size: 16px;
-      font-style: italic;
-      color: rgba(255,255,255,0.85);
-    }
-
-    .arrival {
-      display: none;
-      margin-top: 30px;
-      color: #ffc0d5;
-      font-size: clamp(27px, 5vw, 42px);
-      line-height: 1.4;
-    }
-
-    .arrival p {
-      color: white;
-      font: 15px/1.8 Arial, sans-serif;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 480px) {
-      .card { padding: 38px 16px 30px; }
-      .timer { gap: 7px; }
-      .box { padding: 19px 2px; }
-      .label { font-size: 8px; letter-spacing: 1px; }
-      .date { font-size: 10px; letter-spacing: 1px; }
-    }
-  </style>
+  }
+  :root[data-theme="dark"] {
+    --sky1: #2a1033; --sky2: #5b1d4f; --sky3: #a33b6b;
+    --ink: #fff0f6; --soft: #f3c4d8; --accent: #ff8fb8; --track: rgba(255,143,184,.2);
+    --glass: rgba(255,255,255,.1); --glass-border: rgba(255,255,255,.22);
+    --sun: #ffb48a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { min-height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    min-height: 100vh; overflow-x: hidden; color: var(--ink);
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 55%, var(--sky3) 100%);
+    background-attachment: fixed;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 36px 18px 48px; text-align: center; position: relative;
+  }
+  .sun {
+    position: fixed; left: 50%; top: 18%; width: min(80vw, 520px); aspect-ratio: 1; transform: translate(-50%, -50%);
+    border-radius: 50%; background: radial-gradient(circle, var(--sun) 0%, transparent 68%);
+    opacity: .85; pointer-events: none; animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe { 50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; } }
+  .petals { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+  .petal {
+    position: absolute; top: -30px; line-height: 1; color: #ff7aa8; opacity: .8;
+    text-shadow: 0 0 10px rgba(255,120,170,.55); animation: fall linear forwards;
+  }
+  @keyframes fall {
+    from { transform: translate3d(0,0,0) rotate(0); opacity: 0; }
+    10% { opacity: .85; }
+    to { transform: translate3d(var(--dx), 110vh, 0) rotate(40deg); opacity: 0; }
+  }
+  main { position: relative; z-index: 1; width: 100%; max-width: 760px; }
+  .kicker { font-size: 14px; letter-spacing: 6px; text-transform: uppercase; color: var(--soft); margin-bottom: 4px; }
+  .name {
+    font-family: "Great Vibes", "Snell Roundhand", cursive;
+    font-size: clamp(72px, 19vw, 150px); line-height: 1.05; color: var(--accent);
+    text-shadow: 0 6px 30px rgba(214,69,122,.25);
+  }
+  .tag { font-size: clamp(20px, 4.4vw, 28px); font-style: italic; margin: 6px 0 34px; color: var(--ink); }
+  .rings { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 2.5vw, 22px); }
+  .ring {
+    position: relative; aspect-ratio: 1; border-radius: 50%;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 14px 40px rgba(214,69,122,.18);
+  }
+  .ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring circle { fill: none; stroke-width: 4; }
+  .ring .tr { stroke: var(--track); }
+  .ring .pr { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 276.46; stroke-dashoffset: 276.46; transition: stroke-dashoffset .6s ease; }
+  .val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .num { font-size: clamp(26px, 7.5vw, 56px); font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
+  .unit { font-size: clamp(9px, 2.2vw, 13px); letter-spacing: 2px; text-transform: uppercase; color: var(--soft); margin-top: 4px; }
+  .note {
+    margin: 38px auto 0; max-width: 520px; min-height: 3.2em;
+    font-size: clamp(19px, 4vw, 24px); font-style: italic; line-height: 1.6; color: var(--ink);
+    transition: opacity .8s ease;
+  }
+  .date { margin-top: 22px; font-size: 14px; letter-spacing: 4px; color: var(--soft); text-transform: uppercase; }
+  .arrival { display: none; }
+  .arrival h2 { font-family: "Great Vibes", cursive; font-weight: 400; font-size: clamp(46px, 12vw, 92px); color: var(--accent); line-height: 1.15; }
+  .arrival p { font-size: clamp(20px, 4.4vw, 28px); font-style: italic; margin-top: 12px; }
+  .done .live { display: none; }
+  .done .arrival { display: block; }
+  @media (prefers-reduced-motion: reduce) { .sun, .petal { animation: none; } }
+</style>
 </head>
-
 <body>
-  <div class="hearts" id="hearts"></div>
+  <div class="sun"></div>
+  <div class="petals" id="petals"></div>
 
-  <main class="card">
-    <div class="heart-icon">♡</div>
+  <main id="main">
+    <div class="live">
+      <h1 class="name">Shinky</h1>
+      <p class="tag">Until I hold you again, baby 🤍</p>
 
-    <p class="eyebrow">A date with my love.</p>
+      <section class="rings" aria-label="Countdown">
+        <div class="ring"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" id="r-d" cx="50" cy="50" r="44"/></svg><div class="val"><span class="num" id="d">00</span><span class="unit">Days</span></div></div>
+        <div class="ring"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" id="r-h" cx="50" cy="50" r="44"/></svg><div class="val"><span class="num" id="h">00</span><span class="unit">Hours</span></div></div>
+        <div class="ring"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" id="r-m" cx="50" cy="50" r="44"/></svg><div class="val"><span class="num" id="m">00</span><span class="unit">Min</span></div></div>
+        <div class="ring"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="44"/><circle class="pr" id="r-s" cx="50" cy="50" r="44"/></svg><div class="val"><span class="num" id="s">00</span><span class="unit">Sec</span></div></div>
+      </section>
 
-    <h1>Counting down<br />to You 🤍</span></h1>
-
-    <p class="subtitle">
-      Every second brings me closer to my favorite place ...<br />
-      Right next to you.
-    </p>
-
-    <section class="timer" id="timer">
-      <div class="box">
-        <span class="number" id="days">00</span>
-        <span class="label">Days</span>
-      </div>
-      <div class="box">
-        <span class="number" id="hours">00</span>
-        <span class="label">Hours</span>
-      </div>
-      <div class="box">
-        <span class="number" id="minutes">00</span>
-        <span class="label">Minutes</span>
-      </div>
-      <div class="box">
-        <span class="number" id="seconds">00</span>
-        <span class="label">Seconds</span>
-      </div>
-    </section>
-
-    <p class="date">18 OCTOBER 2026</p>
-
-    <div class="arrival" id="arrival">
-      Finally, my favorite person. 🤍
-      <p>The countdown ends. Our moment begins. ♡</p>
+      <p class="note" id="note"></p>
+      <p class="date">16 November 2026</p>
     </div>
 
-    <p class="footer" id="footer">Waiting for you & me ♡</p>
+    <div class="arrival">
+      <p class="kicker">Shinky</p>
+      <h2>I’m here 🤍</h2>
+      <p>The wait is over. Finally, I get to be with you.</p>
+    </div>
   </main>
 
-  <script>
-    // 18 October 2026, 1:00 PM IST
-    const targetDate =
-      new Date("2026-10-18T13:00:00+05:30").getTime();
+<script>
+  // 16 November 2026, 1:00 PM IST. Edit this line to change the moment.
+  const target = new Date("2026-11-16T13:00:00+05:30").getTime();
+  const C = 276.46;
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, "0");
+  const startDiff = Math.max(target - Date.now(), 1);
+  const startDays = Math.max(Math.ceil(startDiff / 86400000), 1);
 
-    const timer = document.getElementById("timer");
-    const arrival = document.getElementById("arrival");
-    const footer = document.getElementById("footer");
+  function ring(id, frac) {
+    $(id).style.strokeDashoffset = C * (1 - Math.min(Math.max(frac, 0), 1));
+  }
 
-    function updateTimer() {
-      const diff = targetDate - Date.now();
-
-      if (diff <= 0) {
-        timer.style.display = "none";
-        document.querySelector(".date").style.display = "none";
-        document.querySelector(".subtitle").style.display = "none";
-        arrival.style.display = "block";
-        footer.style.display = "none";
-        return;
-      }
-
-      document.getElementById("days").textContent =
-        String(Math.floor(diff / 86400000)).padStart(2, "0");
-
-      document.getElementById("hours").textContent =
-        String(Math.floor(diff / 3600000) % 24).padStart(2, "0");
-
-      document.getElementById("minutes").textContent =
-        String(Math.floor(diff / 60000) % 60).padStart(2, "0");
-
-      document.getElementById("seconds").textContent =
-        String(Math.floor(diff / 1000) % 60).padStart(2, "0");
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      $("main").classList.add("done");
+      burst();
+      clearInterval(timerId);
+      return;
     }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor(diff / 3600000) % 24;
+    const m = Math.floor(diff / 60000) % 60;
+    const s = Math.floor(diff / 1000) % 60;
+    $("d").textContent = pad(d); $("h").textContent = pad(h);
+    $("m").textContent = pad(m); $("s").textContent = pad(s);
+    ring("r-d", d / startDays); ring("r-h", h / 24);
+    ring("r-m", m / 60); ring("r-s", s / 60);
+  }
+  const timerId = setInterval(tick, 1000);
+  tick();
 
-    updateTimer();
-    setInterval(updateTimer, 1000);
+  const notes = [
+    "Every sunrise between now and then brings me one step closer to you.",
+    "You turn ordinary days into my favorite memories.",
+    "Your smile is the place my heart calls home.",
+    "Wherever I am, my heart is already with you.",
+    "Missing you is the sweetest ache, and it ends soon.",
+    "Soon, no more counting. Just you, me, and all the time in the world."
+  ];
+  let ni = 0;
+  const note = $("note");
+  function showNote() {
+    note.style.opacity = 0;
+    setTimeout(() => { note.textContent = notes[ni++ % notes.length]; note.style.opacity = 1; }, 600);
+  }
+  note.textContent = notes[ni++];
+  setInterval(showNote, 5500);
 
-    const hearts = document.getElementById("hearts");
-
-    function createHeart() {
-      if (document.hidden) return;
-
-      const heart = document.createElement("span");
-      heart.className = "heart";
-      heart.textContent = Math.random() > 0.5 ? "♡" : "♥";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = (14 + Math.random() * 18) + "px";
-      heart.style.animationDuration = (7 + Math.random() * 6) + "s";
-
-      hearts.appendChild(heart);
-      setTimeout(() => heart.remove(), 14000);
-    }
-
-    setInterval(createHeart, 600);
-  </script>
+  const petals = $("petals");
+  function petal(fast) {
+    if (document.hidden) return;
+    const p = document.createElement("span");
+    p.className = "petal";
+    const sz = 0.7 + Math.random() * 1.1;
+    p.style.left = Math.random() * 100 + "vw";
+    p.textContent = Math.random() > 0.5 ? "♥" : "♡";
+    p.style.fontSize = Math.round(14 + sz * 14) + "px";
+    p.style.setProperty("--dx", (Math.random() * 160 - 80) + "px");
+    p.style.animationDuration = (fast ? 4 : 9) + Math.random() * 5 + "s";
+    petals.appendChild(p);
+    setTimeout(() => p.remove(), 15000);
+  }
+  setInterval(() => petal(false), 700);
+  function burst() { for (let i = 0; i < 60; i++) setTimeout(() => petal(true), i * 60); }
+</script>
 </body>
 </html>
